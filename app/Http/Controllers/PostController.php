@@ -22,8 +22,11 @@ class PostController extends Controller
 
     public function create()
     {
-        // create.blade.phpを表示する
+        //create.blade.phpを表示する
         return view('posts.create');
+
+        // $note = "投稿画面だよ！！";
+        // dd($note);
     }
 
     public function store(PostRequest $request)
@@ -62,7 +65,8 @@ class PostController extends Controller
             return redirect('/');
         }
 
-        return view('posts.edit', ['post' => $post]);
+        //return view('posts.edit', ['post' => $post]);
+        dd($post);
     }
 
     public function update(PostRequest $request, $id)
