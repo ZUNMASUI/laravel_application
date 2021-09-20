@@ -52,4 +52,36 @@ class PostController extends Controller
         // show.blade.phpを表示する(これから作成)
         return view('posts.show', ['post' => $post]);
     }
+    public function edit($id)
+    {
+        // 投稿データのIDでモデルから同じidのものを取得
+        $post = Post::findOrFail($id);
+
+        // 同じ投稿者以外の編集を防ぐ 一致しなければ
+        if ($post->user_id !== Auth::id()) {
+            return redirect('/');
+        }
+
+        return view('posts.edit', ['post' => $post]);
+    }
+
+    public function update(PostRequest $request, $id)
+    {
+        // 投稿データのIDでモデルから同じidのものを取得
+        $post = Post::findOrFail($id);
+
+        // 同じ投稿者以外の編集を防ぐ 一致しなければ
+        if ($post->user_id !== Auth::id()) {
+            return redirect('/');
+        }
+
+        // 編集画面から受け取ったデータをインスタンスに反映
+        $post->title = $request->title;
+        $post->body = $request->body;
+
+        // DBのレコードを更新
+        $post->save();
+
+        return redirect('/');
+    }
 }
